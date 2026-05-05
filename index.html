@@ -8,7 +8,42 @@
 </head>
 <body>
    <div class="Cachorro">
-     <img src="negão.webp" alt="Cachorro">
+     <img src="negão.webp" alt="Cachorro" draggable="false">
    </div>
+   <script>
+     const img = document.querySelector('.Cachorro img');
+     let isDragging = false;
+     let startX = 0;
+     let startY = 0;
+     let initialLeft = 0;
+     let initialTop = 0;
+
+     img.style.position = 'relative';
+
+     img.addEventListener('pointerdown', event => {
+       isDragging = true;
+       img.setPointerCapture(event.pointerId);
+       startX = event.clientX;
+       startY = event.clientY;
+       initialLeft = parseFloat(getComputedStyle(img).left) || 0;
+       initialTop = parseFloat(getComputedStyle(img).top) || 0;
+     });
+
+     img.addEventListener('pointermove', event => {
+       if (!isDragging) return;
+       const deltaX = event.clientX - startX;
+       const deltaY = event.clientY - startY;
+       img.style.left = `${initialLeft + deltaX}px`;
+       img.style.top = `${initialTop + deltaY}px`;
+     });
+
+     img.addEventListener('pointerup', () => {
+       isDragging = false;
+     });
+
+     img.addEventListener('pointercancel', () => {
+       isDragging = false;
+     });
+   </script>
 </body>
 </html>
